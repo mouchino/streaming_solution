@@ -15,7 +15,7 @@ We gebruiken een openbare API om temperatuurdata van weerstations in Singapore o
   - Slaat opgehaalde data op in een PostgreSQL-database.
   - Start Kafka-producers om de data naar Kafka-topics te sturen.
 - **Configuratie:**
-  - `entrypoint.sh`: Installeert vereisten en initialiseert de Airflow database.
+  - `entrypoint.sh`: Installeert vereisten en initialiseert de Airflow database. Controleer of LF-linebreak door Git is omgezet naar CRLF-linebreak. Zo ja, pas het zelf handmatig aan naar LF-linebreak, anders zal het .sh bestand niet werken. 
   - DAG-scripts in de `dags/` directory: Bevatten de workflowlogica.
 
 ### 3. **PostgreSQL**
@@ -47,7 +47,7 @@ We gebruiken een openbare API om temperatuurdata van weerstations in Singapore o
   - Slaat de verwerkte data op in een Cassandra-database.
 - **Configuratie:**
   - `spark_stream_to_cassandra.py` bevat de Spark-logica voor data-verwerking.
-  - `master_node_setup.sh` installeert benodigde Spark- en Kafka-connectors.
+  - `master_node_setup.sh` installeert benodigde Spark- en Kafka-connectors. Controleer of LF-linebreak door Git is omgezet naar CRLF-linebreak. Zo ja, pas het zelf handmatig aan naar LF-linebreak, anders zal het .sh bestand niet werken. 
 
 ### 7. **Cassandra**
 - **Doel:** Permanente opslag van de verwerkte data.
@@ -107,6 +107,9 @@ Opent een interactieve Bash-shell binnen de container:
 Start een Spark-job met spark-submit:
 -Voert het script spark_stream_to_cassandra.py uit binnen een Apache Spark-cluster.
 -Gebruikt spark://localhost:7077 als Spark-master.
+
+Pas de onderstaande directories aan naar de directories waar de JAR-bestanden en python lokaal staan.
+Gebruik https://mvnrepository.com/ om de onderstaande JAR-bestanden te downloaden.
 
 ```sh
 docker cp C:\Users\301682\Documents\downloads\jar\spark-cassandra-connector_2.12-3.5.1.jar streaming_solution-spark-master-1:/opt/bitnami/spark/jars/ && \
