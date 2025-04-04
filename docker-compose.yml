@@ -107,7 +107,8 @@ services:
     command: webserver
     entrypoint: ["/opt/airflow/script/entrypoint.sh"]
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     environment:
       - LOAD_EX=n
       - EXECUTOR=Sequential
@@ -136,6 +137,8 @@ services:
     depends_on:
       webserver:
         condition: service_healthy
+      postgres:
+        condition: service_healthy
     volumes:
       - ./dags:/opt/airflow/dags
       - ./script/entrypoint.sh:/opt/airflow/script/entrypoint.sh
@@ -150,11 +153,18 @@ services:
       - confluent
 
   postgres:
-    image: postgres:14.0
+    image: postgres:13
     environment:
       - POSTGRES_USER=airflow
       - POSTGRES_PASSWORD=airflow
       - POSTGRES_DB=airflow
+    volumes:
+      - postgres-db-volume:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     logging:
       options:
         max-size: 10m
@@ -204,3 +214,6 @@ services:
 
 networks:
   confluent:
+
+volumes:
+  postgres-db-volume:

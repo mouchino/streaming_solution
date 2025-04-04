@@ -92,7 +92,7 @@ def stream_data():
     start_time = time.time()
 
     while True:
-        if time.time() > start_time + 120:  # Stop na 2 minuten
+        if time.time() > start_time + 3600:  # Stop na 1 uur
             break
 
         try:
@@ -105,7 +105,8 @@ def stream_data():
                 producer.send('air_temperature', station)
     
                 logging.info(f"Verzonden naar Kafka: {json.dumps(temperature, indent=2)}")
-            
+                
+            time.sleep(5)
 
         except Exception as e:
             logging.error(f'Fout bij verzenden naar Kafka: {e}')
