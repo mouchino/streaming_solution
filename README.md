@@ -108,8 +108,9 @@ Start een Spark-job met spark-submit:
 -Voert het script spark_stream_to_cassandra.py uit binnen een Apache Spark-cluster.
 -Gebruikt spark://localhost:7077 als Spark-master.
 
-Pas de onderstaande directories aan naar de directories waar de JAR-bestanden en python lokaal staan.
-Gebruik https://mvnrepository.com/ om de onderstaande JAR-bestanden te downloaden.
+Let op!
+-Pas de onderstaande directories aan naar de directories waar de JAR-bestanden en python lokaal staan.
+-Gebruik https://mvnrepository.com/ om de onderstaande JAR-bestanden te downloaden.
 
 ```sh
 docker cp C:\Users\301682\Documents\downloads\jar\spark-cassandra-connector_2.12-3.5.1.jar streaming_solution-spark-master-1:/opt/bitnami/spark/jars/ && \
@@ -136,10 +137,7 @@ Ga naar: [http://localhost:9090](http://localhost:9090) en controleer of de Spar
 docker exec -it cassandra cqlsh -u cassandra -p cassandra
 
 # Binnen de CQL shell, voer de volgende commando's uit:
-DESC TABLE weather_data.master_table;
 DESC TABLE weather_data.temperature_data;
-
-SELECT * FROM weather_data.master_table;
 SELECT * FROM weather_data.temperature_data;
 
 ```
