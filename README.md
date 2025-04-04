@@ -95,6 +95,9 @@ Ga naar: [http://localhost:9021](http://localhost:9021) en controleer of de beri
 ### 4. **Spark streaming job starten**
 Dit script doet het volgende:
 
+Kopieert JAR-bestanden naar een Docker-container:
+-Verschillende JAR-bestanden worden gekopieerd naar de opt/bitnami/spark/jars/ map van de container streaming_solution-spark-master-1.
+
 Kopieert Python-bestanden naar een Docker-container:
 -spark_stream_to_cassandra.py en helpers.py worden gekopieerd naar de /app/ map van de container streaming_solution-spark-master-1.
 
@@ -104,20 +107,20 @@ Opent een interactieve Bash-shell binnen de container:
 Start een Spark-job met spark-submit:
 -Voert het script spark_stream_to_cassandra.py uit binnen een Apache Spark-cluster.
 -Gebruikt spark://localhost:7077 als Spark-master.
--Zet configuraties voor authenticatie en bestandsbeheer.
--Definieert een specifieke Ivy-cache locatie voor Spark-jars.
 
 ```sh
-docker cp .\streaming_solution\spark_stream_to_cassandra.py streaming_solution-spark-master-1:/app/ && \
-docker cp .\streaming_solution\helpers.py streaming_solution-spark-master-1:/app/ && \
+docker cp C:\Users\301682\Documents\downloads\jar\spark-cassandra-connector_2.12-3.5.1.jar streaming_solution-spark-master-1:/opt/bitnami/spark/jars/ && \
+docker cp C:\Users\301682\Documents\downloads\jar\commons-pool2-2.11.1.jar streaming_solution-spark-master-1:/opt/bitnami/spark/jars/ && \
+docker cp C:\Users\301682\Documents\downloads\jar\spark-token-provider-kafka-0-10_2.12-3.4.1.jar streaming_solution-spark-master-1:/opt/bitnami/spark/jars/ && \
+docker cp C:\Users\301682\Documents\downloads\jar\spark-sql-kafka-0-10_2.12-3.4.1.jar streaming_solution-spark-master-1:/opt/bitnami/spark/jars/ && \
+docker cp C:\Users\301682\Documents\downloads\jar\kafka-clients-3.6.1.jar streaming_solution-spark-master-1:/opt/bitnami/spark/jars/ && \
+docker cp C:\Users\301682\Documents\downloads\jar\guava-30.1.1-jre.jar streaming_solution-spark-master-1:/opt/bitnami/spark/jars/ && \
+docker cp C:\Users\301682\Documents\downloads\jar\spark-cassandra-connector-assembly_2.12-3.5.1.jar streaming_solution-spark-master-1:/opt/bitnami/spark/jars/ && \
+docker cp C:\Users\301682\Documents\streaming_solution\spark_stream_to_cassandra.py streaming_solution-spark-master-1:/app/ && \
+docker cp C:\Users\301682\Documents\streaming_solution\helpers.py streaming_solution-spark-master-1:/app/ && \
 docker exec -it streaming_solution-spark-master-1 /bin/bash 
 
-
-  spark-submit --verbose --master spark://localhost:7077 \
-  --conf spark.hadoop.security.authentication=none \
-  --conf spark.hadoop.fs.file.impl.disable.cache=true \
-  --conf spark.jars.ivy=/opt/bitnami/spark/.ivy2 \
-  /app/spark_stream_to_cassandra.py
+spark-submit --verbose --master spark://spark-master:7077 /app/spark_stream_to_cassandra.py
 
 ```
 
